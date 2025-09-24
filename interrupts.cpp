@@ -22,7 +22,8 @@ int main(int argc, char** argv) {
 int current_time = 0;
 int mode_bit = 0;
 int CPU = 50;
-
+int context_save_time = 0;
+boolean interrupt_flag = false;
     /******************************************************************/
 
     //parse each line of the input trace file
@@ -30,7 +31,9 @@ int CPU = 50;
         auto [activity, duration_intr] = parse_trace(trace);
 
         /******************ADD YOUR SIMULATION CODE HERE*************************/
+//Step 1: Interrupt is raised
 
+        
 
 
         /************************************************************************/
