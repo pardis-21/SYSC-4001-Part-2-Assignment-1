@@ -34,16 +34,20 @@ PC = &15;
         auto [activity, duration_intr] = parse_trace(trace);
 
         /******************ADD YOUR SIMULATION CODE HERE*************************/
-//Step 1: Interrupt is raised
-interrupt_flag = true;
-
+//Step 1: Interrupt flag is raised (hardware detects the interrupt)
 //Step 2: Registers notice the change, and the current state of the PC is stored
-PC = PC;
 
+
+while (interrupt_flag = false) {
+    
+    if (interrupt_flag = true)
+
+
+}
 
         /************************************************************************/
 
-    }
+
 
     input_file.close();
 
