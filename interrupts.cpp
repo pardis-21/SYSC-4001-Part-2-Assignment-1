@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     /******************ADD YOUR VARIABLES HERE*************************/
 int current_time = 0;
 int mode_bit = 0;
-
+int CPU = 50;
 
     /******************************************************************/
 
