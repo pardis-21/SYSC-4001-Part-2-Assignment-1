@@ -24,10 +24,7 @@ int current_time = 0;
 int mode_bit = 0;
 int CPU = 50;
 int context_save_time = 0;
-boolean interrupt_flag = false;
-vector_table.txt* ISR;
-ISR = *PC;
-PC = &ISR[15];
+bool interrupt_flag = false;
 
     /******************************************************************/
     //parse each line of the input trace file
@@ -39,7 +36,7 @@ PC = &ISR[15];
 //Step 2: Registers notice the change, and the current state of the PC is stored
 
 
-while (interrupt_flag = false) {
+while(interrupt_flag = false) {
     
     if (interrupt_flag = true){
         
@@ -51,23 +48,13 @@ while (interrupt_flag = false) {
         activity.getline(ISR, 15);
         
         printf("Obtain ISR address");
-        
-        
-        
-
-    }
-        
-
-
-}
 
         /************************************************************************/
-
-
 
     input_file.close();
 
     write_output(execution);
 
     return 0;
+
 }
