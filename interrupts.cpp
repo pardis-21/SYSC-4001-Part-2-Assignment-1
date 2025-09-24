@@ -40,7 +40,15 @@ PC = &15;
 
 while (interrupt_flag = false) {
     
-    if (interrupt_flag = true)
+    if (interrupt_flag = true){
+        printf(Switched to kernel mode\n);
+        mode_bit = 1;
+        printf(context is saved);
+        PC = PC;
+        
+
+    }
+        
 
 
 }
