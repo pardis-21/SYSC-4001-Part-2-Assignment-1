@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 
     /******************ADD YOUR VARIABLES HERE*************************/
 int current_time = 0;
-int 
+int mode_bit = 0;
 
 
     /******************************************************************/
