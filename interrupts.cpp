@@ -25,8 +25,9 @@ int mode_bit = 0;
 int CPU = 50;
 int context_save_time = 0;
 boolean interrupt_flag = false;
-vector_table.txt* PC;
-PC = &15;
+vector_table.txt* ISR;
+ISR = *PC;
+PC = &ISR[15];
 
     /******************************************************************/
     //parse each line of the input trace file
@@ -41,10 +42,17 @@ PC = &15;
 while (interrupt_flag = false) {
     
     if (interrupt_flag = true){
-        printf(Switched to kernel mode\n);
+        
+        printf("Switched to kernel mode\n");
         mode_bit = 1;
-        printf(context is saved);
-        PC = PC;
+        printf("Initializing CPU");
+        
+        printf("Context is saved");
+        activity.getline(ISR, 15);
+        
+        printf("Obtain ISR address");
+        
+        
         
 
     }
