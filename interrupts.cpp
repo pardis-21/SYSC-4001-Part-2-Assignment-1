@@ -9,6 +9,12 @@
 #include"interrupts.hpp"
 //#include"vector_table.txt"
 //#include"device_table.txt"
+/*
+ * @param argc number of command line arguments
+ * @param argv the command line arguments
+ * @return a vector of strings (the parsed vector table)
+ * 
+ */
 
 int main(int argc, char** argv) {
 
@@ -28,6 +34,8 @@ int CPU = 50;
 int context_save_time = 0;
 bool interrupt_flag = false;
 int ISR = 0;
+argc = 4;
+argv = ("./interrupts", "trace.txt", "vector_table.txt", "device_table.txt");
 
     /******************************************************************/
     //parse each line of the input trace file
@@ -53,17 +61,11 @@ while(interrupt_flag = false) {
         if (trace == "SYSCALL"){
             input_file.open("vector_table.txt");
             std::getline(input_file, trace);
-            vectors.open(argv[2]);
+            input_file.open(argv[2]);
             vectors.push_back(trace);
-            vectors.close();
+            input_file.close();
 
         }
-
-
-        //vectors.open(argv[2]);
-        //getline(trace, vectors);
-        //input_file.push_back(vectors);
-        //vectors.close();
 
 
         //ISR = input_vector_table.open(argv[2]);
