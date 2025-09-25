@@ -4,9 +4,11 @@
  * @author Sasisekhar Govind
  *
  */
-
-#include<interrupts.hpp>
-#include<vector_table.txt>
+#include<stdio.h>
+#include<stdlib.h>
+#include"interrupts.hpp"
+//#include"vector_table.txt"
+//#include"device_table.txt"
 
 int main(int argc, char** argv) {
 
@@ -25,6 +27,7 @@ int mode_bit = 0;
 int CPU = 50;
 int context_save_time = 0;
 bool interrupt_flag = false;
+int ISR = 0;
 
     /******************************************************************/
     //parse each line of the input trace file
@@ -35,26 +38,46 @@ bool interrupt_flag = false;
 //Step 1: Interrupt flag is raised (hardware detects the interrupt)
 //Step 2: Registers notice the change, and the current state of the PC is stored
 
-hey
 while(interrupt_flag = false) {
     
     if (interrupt_flag = true){
         
+        //intr_boilerplate(current_time, intr_num, context_save_time, vectors);
         printf("Switched to kernel mode\n");
         mode_bit = 1;
-        printf("Initializing CPU");
+        current_time++;
+        printf("Context is saved\n");
+        //activity.getline(vectors.open(argv[2]), 15);
+        //getline(vector_table.txt, trace);
         
-        printf("Context is saved");
-        activity.getline(ISR, 15);
-        
+        if (trace == "SYSCALL"){
+            input_file.open("vector_table.txt");
+            std::getline(input_file, trace);
+            vectors.open(argv[2]);
+            vectors.push_back(trace);
+            vectors.close();
+
+        }
+
+
+        //vectors.open(argv[2]);
+        //getline(trace, vectors);
+        //input_file.push_back(vectors);
+        //vectors.close();
+
+
+        //ISR = input_vector_table.open(argv[2]);
         printf("Obtain ISR address");
 
         /************************************************************************/
-
+    }
     input_file.close();
 
     write_output(execution);
 
-    return 0;
+   
+    }
+}
+     return 0;
 
 }
