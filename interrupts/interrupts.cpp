@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 
     //vectors is a C++ std::vector of strings that contain the address of the ISR
     //delays  is a C++ std::vector of ints that contain the delays of each device
-    //the index of these elemens is the device number, starting from 0
+    //the index of these elements is the device number, starting from 0
     auto [vectors, delays] = parse_args(argc, argv);
     std::ifstream input_file(argv[1]);
 
@@ -35,10 +35,6 @@ int CPU = 0;
 int context_save_time = 0;
 bool interrupt_flag = false;
 int ISR = 0;
-argc = 4;
-const argv[] = ("./interrupts", "trace.txt", "vector_table.txt", "device_table.txt");
-
-    /******************************************************************/
     //parse each line of the input trace file
     while(std::getline(input_file, trace)) {
         auto [activity, duration_intr] = parse_trace(trace);
