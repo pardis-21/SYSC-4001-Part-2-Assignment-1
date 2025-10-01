@@ -30,12 +30,13 @@ int main(int argc, char** argv) {
     /******************ADD YOUR VARIABLES HERE*************************/
 int current_time = 0;
 int mode_bit = 0;
-int CPU = 50;
+int CPU_time = 50;
+int CPU = 0;
 int context_save_time = 0;
 bool interrupt_flag = false;
 int ISR = 0;
-//argc = 4;
-//argv = ("./interrupts", "trace.txt", "vector_table.txt", "device_table.txt");
+argc = 4;
+const argv[] = ("./interrupts", "trace.txt", "vector_table.txt", "device_table.txt");
 
     /******************************************************************/
     //parse each line of the input trace file
@@ -46,67 +47,40 @@ int ISR = 0;
 
 
 //setting that the flag is false because no interrupt has been raised
-//interrupt_flag == "END_IO";
-while(interrupt_flag = true) {
+context_save_time = 10;
+
+while (activity != "END") {
     //Step 1: Interrupt flag is raised (hardware detects the interrupt)
-        
-        //intr_boilerplate(current_time, intr_num, context_save_time, vectors);
-        
-        //context save time is added to the current time
-        execution += std::to_string(current_time) + ", " + std::to_string(1) + ", switch to kernel mode\n";
-        current_time++;
+        if (activity == "SYSCALL") {
+            interrupt_flag = true;
+            //entering kernel mode
+            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", switch to kernel mode\n";
+            mode_bit = 1;  
+            CPU = 0;
+            current_time++;
 
+        //Step 2: Context is saved into registers and PC is saved to so that when the interupt is handled, it can return to the same process
         execution += std::to_string(current_time) + ", " + std::to_string(context_save_time) + ", context saved\n";
-
-        current_time += context_save_time;
-
-        //mode bit is set to 1 for kernel mode (for OS)
-        mode_bit = 1;
-       
-        //Step 2: Context is saved into registers
-        context_save_time = 10; //context save time is 5 time units
-        current_time += context_save_time;
-
-        execution += std::to_string(current_time) + ", " + std::to_string(context_save_time) + ", context saved\n";
-        current_time += context_save_time;
-        //Step 3: Obtain the ISR address from the vector table
-        //vector table is opened and the address is obtained
-        //std::ifstream input_vector_table;
-        //input_vector_table.open(argv[2]);
-        std::ifstream input_vector_table;
-        input_vector_table.open("vector_table.txt");
-        if (!input_vector_table.is_open()) {
-            std::cerr << "Error: Unable to open file: " << argv[2] << std::endl;
-            exit(1);
-        }
-        while(std::getline(input_vector_table, trace)) {
-            vectors.push_back(trace);
-        }
-        input_vector_table.close();
-        std::ifstream device_table;
-        device_table.open(argv[3]);
+        current_time += context_save_time;  
 
 
-        if (trace == "SYSCALL"){
-            input_file.open("vector_table.txt");
-            std::getline(input_file, trace);
-            input_file.open(argv[2]);
-            vectors.push_back(trace);
-            input_file.close();
+        } 
+        else if (activity == "END_IO"){
 
-        } else if (trace == "END_IO"){
-            input_file.open("vector_table.txt");
-            std::getline(input_file, trace);
-            std::getline(input_file, trace);
-            input_file.open(argv[2]);
-            vectors.push_back(trace);
-            input_file.close();
-        }
+            interrupt_flag = true;
+        }                               
+        
         else {
-            std::cerr << "Error: Malformed input line: " << trace << std::endl;
-            return {-1};
-        }
+            interrupt_flag = false;
+        }   
 
+
+
+        //Step 3: Obtain the ISR address from the vector table
+       
+        
+    
+        
 
         /************************************************************************/
     }

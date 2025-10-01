@@ -125,7 +125,6 @@ std::pair<std::string, int> intr_boilerplate(int current_time, int intr_num, int
     return std::make_pair(execution, current_time);
 }
 
-
 void write_output(std::string execution) {
     std::ofstream output_file("execution.txt");
 
