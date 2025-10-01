@@ -42,26 +42,37 @@ int ISR = 0;
         /******************ADD YOUR SIMULATION CODE HERE*************************/
 
 
-//setting that the flag is false because no interrupt has been raised
-context_save_time = 10;
-
-//while (activity != "END") {
     //Step 1: Interrupt flag is raised (hardware detects the interrupt)
         if (activity == "SYSCALL") {
             interrupt_flag = true;
             //entering kernel mode
-            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", switch to kernel mode\n";
-            mode_bit = 1;  
-            CPU = 0;
+            CPU += duration_intr; //CPU time is incremented by the duration of the activity
+            ISR = 2; //SYSCALL interrupt number is 2
+            intr_boilerplate(current_time, ISR, context_save_time, vectors);
+            write_output(execution);
+            mode_bit = 1; 
             current_time++;
 
         //Step 2: Context is saved into registers and PC is saved to so that when the interupt is handled, it can return to the same process
-        execution += std::to_string(current_time) + ", " + std::to_string(context_save_time) + ", context saved\n";
-        current_time += context_save_time;  
-
-
         } 
-        else if (activity == "END_IO"){
+        else if (activity == "CPU") {
+            if (mode_bit == 0) { //user mode
+                if (interrupt_flag == true && CPU + duration_intr > CPU_time) {
+                    //handle interrupt
+                    int time_to_interrupt = CPU_time - CPU;
+                    CPU += time_to_interrupt;
+                    current_time += time_to_interrupt;
+                    //entering kernel mode
+                    std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
+                    write_output(execution);
+                    mode_bit = 1; 
+                    current_time++;
+                    interrupt_flag = false; //reset interrupt flag after handling interrupt
+                    CPU = duration_intr - time_to_interrupt; //remaining CPU time after interrupt is handled
+                    current_time += CPU; //increment current time by remaining CPU time
+                } 
+            }
+          else if (activity == "END_IO"){
 
             interrupt_flag = true;
         }                               
@@ -71,7 +82,6 @@ context_save_time = 10;
         }   
 
 
-
         //Step 3: Obtain the ISR address from the vector table
        
         
@@ -79,13 +89,14 @@ context_save_time = 10;
         
 
         /************************************************************************/
-    //}
+
     input_file.close();
 
     write_output(execution);
 
    
     }
+}
      return 0;
 
 }
