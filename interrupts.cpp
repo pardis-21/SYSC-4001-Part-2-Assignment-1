@@ -5,7 +5,7 @@
  *
  */
 
-#include<interrupts.hpp>
+#include "interrupts.hpp"
 #include<vector_table.txt>
 
 int main(int argc, char** argv) {
@@ -21,10 +21,11 @@ int main(int argc, char** argv) {
 
     /******************ADD YOUR VARIABLES HERE*************************/
 int current_time = 0;
-int mode_bit = 0;
-int CPU = 50;
-int context_save_time = 0;
-bool interrupt_flag = false;
+//int mode_bit = 0;
+//int CPU = 50;
+int context_save_time = 10;
+//bool interrupt_flag = false;
+int isr_activity_time = 40; 
 
     /******************************************************************/
     //parse each line of the input trace file
@@ -35,7 +36,14 @@ bool interrupt_flag = false;
 //Step 1: Interrupt flag is raised (hardware detects the interrupt)
 //Step 2: Registers notice the change, and the current state of the PC is stored
 
-hey
+// if activity is an interrupt
+// yes, switch to kernel mode
+//save context 
+//find vector in memory
+//obtain ISR address
+//execte ISR body
+//IRET
+//return to user mode
 while(interrupt_flag = false) {
     
     if (interrupt_flag = true){
