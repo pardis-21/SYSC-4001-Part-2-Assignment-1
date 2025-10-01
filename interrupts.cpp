@@ -46,7 +46,7 @@ int ISR = 0;
 
 
 //setting that the flag is false because no interrupt has been raised
-interrupt_flag == "END_IO";
+//interrupt_flag == "END_IO";
 while(interrupt_flag = true) {
     //Step 1: Interrupt flag is raised (hardware detects the interrupt)
         
@@ -104,7 +104,7 @@ while(interrupt_flag = true) {
         }
         else {
             std::cerr << "Error: Malformed input line: " << trace << std::endl;
-            return {"null", -1};
+            return {-1};
         }
 
 
@@ -116,7 +116,6 @@ while(interrupt_flag = true) {
 
    
     }
-}
      return 0;
 
 }
