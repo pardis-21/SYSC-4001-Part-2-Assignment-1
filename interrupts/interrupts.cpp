@@ -37,6 +37,7 @@ int CPU = 0;
 int context_save_time = 0;
 bool interrupt_flag = true;
 int ISR = 0;
+
     //parse each line of the input trace file
     while(std::getline(input_file, trace)) {
         auto [activity, duration_intr] = parse_trace(trace);
@@ -48,7 +49,7 @@ int ISR = 0;
             interrupt_flag = true;
             //entering kernel mode
             std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-            write_output(result.first);
+            write_output(result.next);
             mode_bit = 1; 
             current_time++;
 
