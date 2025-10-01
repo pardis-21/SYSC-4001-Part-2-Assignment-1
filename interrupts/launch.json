@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "name": "(Windows) Launch",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "ec:/Users/Maghami/SYSC-4001-Part-2-Assignment-1/build/Debug/outDebug",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "console": "externalTerminal"
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "c:/Users/Maghami/SYSC-4001-Part-2-Assignment-1",
+      "program": "c:/Users/Maghami/SYSC-4001-Part-2-Assignment-1/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
