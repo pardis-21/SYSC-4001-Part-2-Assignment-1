@@ -45,7 +45,7 @@ int ISR = 0;
 //setting that the flag is false because no interrupt has been raised
 context_save_time = 10;
 
-while (activity != "END") {
+//while (activity != "END") {
     //Step 1: Interrupt flag is raised (hardware detects the interrupt)
         if (activity == "SYSCALL") {
             interrupt_flag = true;
@@ -79,7 +79,7 @@ while (activity != "END") {
         
 
         /************************************************************************/
-    }
+    //}
     input_file.close();
 
     write_output(execution);
