@@ -2,13 +2,15 @@
  *
  * @file interrupts.cpp
  * @author Sasisekhar Govind
+ * 
+ * @student Pardis Ehsani pardis-21
+ * @Seham Khalifa sehamkhalifa1226-beep
  *
  */
 #include<stdio.h>
 #include<stdlib.h>
 #include"interrupts.hpp"
-//#include"vector_table.txt"
-//#include"device_table.txt"
+
 /*
  * @param argc number of command line arguments
  * @param argv the command line arguments
@@ -33,7 +35,7 @@ int mode_bit = 0;
 int CPU_time = 50;
 int CPU = 0;
 int context_save_time = 0;
-bool interrupt_flag = false;
+bool interrupt_flag = true;
 int ISR = 0;
     //parse each line of the input trace file
     while(std::getline(input_file, trace)) {
@@ -41,20 +43,18 @@ int ISR = 0;
 
         /******************ADD YOUR SIMULATION CODE HERE*************************/
 
-
     //Step 1: Interrupt flag is raised (hardware detects the interrupt)
         if (activity == "SYSCALL") {
             interrupt_flag = true;
             //entering kernel mode
-            CPU += duration_intr; //CPU time is incremented by the duration of the activity
-            ISR = 2; //SYSCALL interrupt number is 2
-            intr_boilerplate(current_time, ISR, context_save_time, vectors);
-            write_output(execution);
+            std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
+            write_output(result.first);
             mode_bit = 1; 
             current_time++;
 
         //Step 2: Context is saved into registers and PC is saved to so that when the interupt is handled, it can return to the same process
         } 
+
         else if (activity == "CPU") {
             if (mode_bit == 0) { //user mode
                 if (interrupt_flag == true && CPU + duration_intr > CPU_time) {
@@ -64,7 +64,7 @@ int ISR = 0;
                     current_time += time_to_interrupt;
                     //entering kernel mode
                     std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-                    write_output(execution);
+                    write_output(result.first);
                     mode_bit = 1; 
                     current_time++;
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
@@ -72,6 +72,7 @@ int ISR = 0;
                     current_time += CPU; //increment current time by remaining CPU time
                 } 
             }
+        }
           else if (activity == "END_IO"){
 
             interrupt_flag = true;
@@ -96,7 +97,6 @@ int ISR = 0;
 
    
     }
-}
      return 0;
 
 }
