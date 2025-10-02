@@ -47,11 +47,19 @@ int ISR = 0;
     //Step 1: Interrupt flag is raised (hardware detects the interrupt)
         if (activity == "SYSCALL") {
             interrupt_flag = true;
+            ISR = duration_intr;
             //entering kernel mode
             std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-            write_output(result.next);
+            //write_output(result.next);
+            execution += result.first;
+            current_time = result.second;
             mode_bit = 1; 
             current_time++;
+
+            //delay?
+            int isr_delay = (ISR < (int)delays.size()? delays[ISR]: 40);
+            execution += std::to_string(current_time) + ","+std::to_string(isr_delay)+",exeute ISR for device"+ std::to_string(ISR)+"\n";
+            current_item += isr_delay;
 
         //Step 2: Context is saved into registers and PC is saved to so that when the interupt is handled, it can return to the same process
         } 
