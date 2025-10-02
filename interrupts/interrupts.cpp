@@ -49,7 +49,8 @@ int ISR = 0;
             interrupt_flag = true;
             //entering kernel mode
             std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-            write_output(result.next);
+            execution += result.first + "\n";
+            //write_output(std::to_string(result.second));
             mode_bit = 1; 
             current_time++;
 
@@ -63,9 +64,10 @@ int ISR = 0;
                     int time_to_interrupt = CPU_time - CPU;
                     CPU += time_to_interrupt;
                     current_time += time_to_interrupt;
+
                     //entering kernel mode
                     std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-                    write_output(result.first);
+                    execution += result.first + "\n";
                     mode_bit = 1; 
                     current_time++;
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
@@ -91,13 +93,14 @@ int ISR = 0;
         
 
         /************************************************************************/
-
+    
+    }
     input_file.close();
 
     write_output(execution);
 
    
-    }
+
      return 0;
 
 }
