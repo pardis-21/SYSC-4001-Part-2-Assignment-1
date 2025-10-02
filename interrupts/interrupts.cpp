@@ -32,7 +32,6 @@ int main(int argc, char** argv) {
     /******************ADD YOUR VARIABLES HERE*************************/
 int current_time = 0;
 int mode_bit = 0;
-int CPU_time = 50;
 int CPU = 0;
 int context_save_time = 0;
 bool interrupt_flag = true;
@@ -51,8 +50,8 @@ int ISR = 0;
             //entering kernel mode
             std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
             //write_output(result.next);
-            execution += result.first;
-            current_time = result.second;
+            execution += result.first; //add to output trace
+            current_time = result.second; //update time to new time
             mode_bit = 1; 
             current_time++;
 
@@ -93,19 +92,15 @@ int ISR = 0;
 
 
         //Step 3: Obtain the ISR address from the vector table
-       
-        
-    
-        
 
         /************************************************************************/
-
+    
+    }
     input_file.close();
 
     write_output(execution);
-
    
-    }
+
      return 0;
 
 }
