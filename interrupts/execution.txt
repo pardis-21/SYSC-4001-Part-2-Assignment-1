@@ -1,20 +1,24 @@
-50, 1, switch to kernel mode
-51, 0, context saved
-51, 1, find vector 0 in memory position 0x0000
-52, 1, load address 0X01E3 into the PC
+95, 1, switch to kernel mode
+96, 0, context saved
+96, 1, find vector 19 in memory position 0x0026
+97, 1, load address 0X0765
+ into the PC
 
-96, 1, switch to kernel mode
-97, 0, context saved
-97, 1, find vector 0 in memory position 0x0000
-98, 1, load address 0X01E3 into the PC
+102, 1, switch to kernel mode
+103, 6, context saved
+109, 1, find vector 20 in memory position 0x0028
+110, 1, load address 0X07B7
+ into the PC
 
-97, 1, switch to kernel mode
-98, 0, context saved
-98, 1, find vector 0 in memory position 0x0000
-99, 1, load address 0X01E3 into the PC
+120, 1, switch to kernel mode
+121, 17, context saved
+138, 1, find vector 21 in memory position 0x002A
+139, 1, load address 0X0523
+ into the PC
 
-98, 1, switch to kernel mode
-99, 0, context saved
-99, 1, find vector 0 in memory position 0x0000
-100, 1, load address 0X01E3 into the PC
+135, 1, switch to kernel mode
+136, 14, context saved
+150, 1, find vector 22 in memory position 0x002C
+151, 1, load address 0X03B7
+ into the PC
 
