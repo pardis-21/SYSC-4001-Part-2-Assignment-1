@@ -43,45 +43,43 @@ int ISR = 0;
 
         /******************ADD YOUR SIMULATION CODE HERE*************************/
 
-    //Step 1.1: Interrupt flag is raised (hardware detects the interrupt, CPU)
-     if (activity == "CPU") {
-        CPU = duration_intr;
-        //checking to see if the CPU got a flag indicating an interrupt
-        //Step 1.2: If the CPU is in user mode (mode bit = 0) and interrupt flag is raised, then handle the interrupt
-        if (interrupt_flag == true && mode_bit == 0) {
-            //switching to kernel mode
-            mode_bit = 1;
-            int time_to_interrupt =  CPU; //same as duration_intr
-            CPU += time_to_interrupt;
-            current_time += time_to_interrupt;
-            ISR = delays.size() - 1; //last index of the vector table is for system calls
-            vectors.at(ISR); //getting the ISR address from the vector table
+    //Step 1: Interrupt flag is raised (hardware detects the interrupt)
+        if (activity == "SYSCALL") {
+            interrupt_flag = true;
+            ISR = duration_intr;
             //entering kernel mode
             std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-            execution += result.first + "\n";
-            current_time++;
-            interrupt_flag = false; //reset interrupt flag after handling the interrupt
-            }
-        }
-         //Step 2: Context is saved into registers and PC is saved to so that when the interupt is handled, it can return to the same process
-
-        else if (activity == "SYSCALL") {
-            //interrupt flag is raised to let the CPU know there is an interrupt to handle
-            interrupt_flag = true;
-            current_time += duration_intr;
-            CPU += duration_intr;
-            context_save_time = duration_intr;
-            delays.push_back(duration_intr); //adding the syscall delay to the device table
-            vectors.push_back(vectors.at(vectors.size() - 1)); //adding the syscall vector to the vector table, same as the last entry
-            vectors.at(delays.size() - 1);
-            ISR = delays.size() - 1; //last index of the vector table is for system calls
-            
-            std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-            execution += result.first + "\n";
-            //write_output(std::to_string(result.second));
+            //write_output(result.next);
+            execution += result.first; //add to output trace
+            current_time = result.second; //update time to new time
             mode_bit = 1; 
             current_time++;
-       
+
+            //delay?
+            int isr_delay = (ISR < (int)delays.size()? delays[ISR]: 40);
+            execution += std::to_string(current_time) + ","+std::to_string(isr_delay)+",exeute ISR for device"+ std::to_string(ISR)+"\n";
+            current_time += isr_delay;
+
+        //Step 2: Context is saved into registers and PC is saved to so that when the interupt is handled, it can return to the same process
+        } 
+
+        else if (activity == "CPU") {
+            if (mode_bit == 0) { //user mode
+                if (interrupt_flag == true && CPU + duration_intr > CPU_time) {
+                    //handle interrupt
+                    int time_to_interrupt = CPU_time - CPU;
+                    CPU += time_to_interrupt;
+                    current_time += time_to_interrupt;
+                    //entering kernel mode
+                    std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
+                    write_output(result.first);
+                    mode_bit = 1; 
+                    current_time++;
+                    interrupt_flag = false; //reset interrupt flag after handling interrupt
+                    CPU = duration_intr - time_to_interrupt; //remaining CPU time after interrupt is handled
+                    current_time += CPU; //increment current time by remaining CPU time
+                } 
+            }
         }
           else if (activity == "END_IO"){
 
@@ -94,10 +92,13 @@ int ISR = 0;
 
 
         //Step 3: Obtain the ISR address from the vector table
+<<<<<<< HEAD
        
         
     
         //HELLLLLLLLLLLLLLOOOOOOOOOOOOOOOO
+=======
+>>>>>>> 4229da640aacbbe99a5b08dd9af4cbd56cc72ab4
 
         /************************************************************************/
     
