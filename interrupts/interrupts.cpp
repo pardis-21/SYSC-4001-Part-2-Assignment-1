@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 
     /******************ADD YOUR VARIABLES HERE*************************/
 int current_time = 0;
-int mode_bit = 1;
+int mode_bit = 1; //1 for user mode, 0 for kernel mode
 int CPU = 0;
 int context_save_time = 10; //for saving content
 bool interrupt_flag = false;
@@ -48,12 +48,13 @@ int ISR_delay_time = 40;
         //vectors.insert(vectors.begin(), "0x0000"); //insert the default vector at the beginning of the vector table
         //Step 0: Check if the activity is CPU or IO
         if (activity == "CPU") {
-            //if (mode_bit == 1) { //kernel mode
-                //if (interrupt_flag == true) {
+            if (mode_bit == 1) { //if in user mode
+                mode_bit = 0; //switch to kernel mode
+            } 
                     mode_bit = 0; //switch to kernel mode
                     CPU = duration_intr; //set CPU time
                     std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-                    write_output(result.first);
+                   
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
                     duration_intr = CPU - context_save_time;
                     current_time += CPU; //increment current time by remaining CPU time
@@ -61,26 +62,35 @@ int ISR_delay_time = 40;
             //}
         }
 
-    //Step 1: Interrupt flag is raised (hardware detects the interrupt)
         else if (activity == "SYSCALL") {
             ISR = duration_intr; //set the syscall vector to 0x00FF
             context_save_time -= context_save_time;
             //vectors; //set the syscall vector to 0x00FF
             //std::string vector_address(vectors.at(delays.size() - 1));
             
-            //vector_address = vectors.at(ISR);
-           vectors.pop_back();
             std::pair<std::string, int> result = intr_boilerplate(current_time, ISR , context_save_time, vectors);
             //vectors.insert(vectors.begin(), "0x0000");
             
             execution += result.first; //add to output trace
             mode_bit = 1;
-            current_time = result.second; //update current time
-
-
+            //current_time = result.second; //update current time
+            interrupt_flag = false; //reset interrupt flag after handling interrupt
+        }
+        else if (activity == "END_IO"){
+            ISR = duration_intr; //set the ISR to the device number
+            time_to_interrupt += delays.at(ISR); //set the time to interrupt based on device delay
+            if (time_to_interrupt <= current_time) {
+                interrupt_flag = true; //set interrupt flag if time to interrupt has passed
+            }
+            if (interrupt_flag && mode_bit == 1) { //if interrupt flag is set and in user mode
+                std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
+                execution += result.first; //add to output trace
+                current_time = result.second; //update current time
+                mode_bit = 1; //switch back to user mode
+                interrupt_flag = false; //reset interrupt flag after handling interrupt
+            }
         }
         
-
         /************************************************************************/
     }
     input_file.close();
