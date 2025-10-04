@@ -61,12 +61,12 @@ int ISR_delay_time = 40;
 
     //Step 1: Interrupt flag is raised (hardware detects the interrupt)
         else if (activity == "SYSCALL") {
-            ISR = vectors.size()-1; //set the syscall vector to 0x00FF
+            ISR = duration_intr; //set the syscall vector to 0x00FF
             context_save_time -= context_save_time;
             //vectors.at(delays.size() - 1); //set the syscall vector to 0x00FF
             //std::string vector_address(vectors.at(delays.size() - 1));
             //vector.push_back("0x00FF");
-            std::pair<std::string, int> result = intr_boilerplate(current_time, duration_intr, context_save_time, vectors);
+            std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
             execution += result.first; //add to output trace
             mode_bit = 1;
 
