@@ -38,6 +38,7 @@ bool interrupt_flag = false;
 int ISR = 0;
 int time_to_interrupt = 0;
 int ISR_delay_time = 40;
+//#define VECTOR_SIZE = vectors.size() - 1;
 
     //parse each line of the input trace file
     while(std::getline(input_file, trace)) {
@@ -66,9 +67,12 @@ int ISR_delay_time = 40;
             context_save_time -= context_save_time;
             //vectors; //set the syscall vector to 0x00FF
             //std::string vector_address(vectors.at(delays.size() - 1));
-            //vector.push_back("0x00FF");
             
+            //vector_address = vectors.at(ISR);
+           vectors.pop_back();
             std::pair<std::string, int> result = intr_boilerplate(current_time, ISR , context_save_time, vectors);
+            //vectors.insert(vectors.begin(), "0x0000");
+            
             execution += result.first; //add to output trace
             mode_bit = 1;
             current_time = result.second; //update current time
