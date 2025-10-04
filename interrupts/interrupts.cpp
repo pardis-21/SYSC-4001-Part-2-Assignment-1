@@ -44,7 +44,7 @@ int ISR_delay_time = 40;
         auto [activity, duration_intr] = parse_trace(trace);
 
         /******************ADD YOUR SIMULATION CODE HERE*************************/
-        vectors.insert(vectors.begin(), "0x0000"); //insert the default vector at the beginning of the vector table
+        //vectors.insert(vectors.begin(), "0x0000"); //insert the default vector at the beginning of the vector table
         //Step 0: Check if the activity is CPU or IO
         if (activity == "CPU") {
             //if (mode_bit == 1) { //kernel mode
@@ -62,7 +62,7 @@ int ISR_delay_time = 40;
 
     //Step 1: Interrupt flag is raised (hardware detects the interrupt)
         else if (activity == "SYSCALL") {
-            ISR = duration_intr; //set the syscall vector to 0x00FF
+            ISR = duration_intr - 1; //set the syscall vector to 0x00FF
             context_save_time -= context_save_time;
             //vectors; //set the syscall vector to 0x00FF
             //std::string vector_address(vectors.at(delays.size() - 1));
