@@ -44,6 +44,7 @@ int ISR_delay_time = 40;
         auto [activity, duration_intr] = parse_trace(trace);
 
         /******************ADD YOUR SIMULATION CODE HERE*************************/
+        vectors.insert(vectors.begin(), "0x0000"); //insert the default vector at the beginning of the vector table
         //Step 0: Check if the activity is CPU or IO
         if (activity == "CPU") {
             //if (mode_bit == 1) { //kernel mode
@@ -63,16 +64,18 @@ int ISR_delay_time = 40;
         else if (activity == "SYSCALL") {
             ISR = duration_intr; //set the syscall vector to 0x00FF
             context_save_time -= context_save_time;
-            //vectors.at(delays.size() - 1); //set the syscall vector to 0x00FF
+            //vectors; //set the syscall vector to 0x00FF
             //std::string vector_address(vectors.at(delays.size() - 1));
             //vector.push_back("0x00FF");
-            std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
+            
+            std::pair<std::string, int> result = intr_boilerplate(current_time, ISR , context_save_time, vectors);
             execution += result.first; //add to output trace
             mode_bit = 1;
+            current_time = result.second; //update current time
 
-        //Step 2: Context is saved into registers and PC is saved to so that when the interupt is handled, it can return to the same process
+
         }
-        //Step 3: Obtain the ISR address from the vector table
+        
 
         /************************************************************************/
     }
