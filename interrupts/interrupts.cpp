@@ -65,18 +65,18 @@ int ISR = 0;
 
         else if (activity == "CPU") {
             if (mode_bit == 0) { //user mode
-                if (interrupt_flag == true && CPU + duration_intr > CPU_time) {
+                if (interrupt_flag == true) {
                     //handle interrupt
-                    int time_to_interrupt = CPU_time - CPU;
-                    CPU += time_to_interrupt;
-                    current_time += time_to_interrupt;
+                    //int time_to_interrupt = CPU_time - CPU;
+                    CPU += context_save_time;
+                    //current_time += time_to_interrupt;
                     //entering kernel mode
                     std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
                     write_output(result.first);
                     mode_bit = 1; 
                     current_time++;
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
-                    CPU = duration_intr - time_to_interrupt; //remaining CPU time after interrupt is handled
+                    CPU = duration_intr; //remaining CPU time after interrupt is handled
                     current_time += CPU; //increment current time by remaining CPU time
                 } 
             }
@@ -92,13 +92,6 @@ int ISR = 0;
 
 
         //Step 3: Obtain the ISR address from the vector table
-<<<<<<< HEAD
-       
-        
-    
-        //HELLLLLLLLLLLLLLOOOOOOOOOOOOOOOO
-=======
->>>>>>> 4229da640aacbbe99a5b08dd9af4cbd56cc72ab4
 
         /************************************************************************/
     
