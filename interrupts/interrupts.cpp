@@ -31,76 +31,55 @@ int main(int argc, char** argv) {
 
     /******************ADD YOUR VARIABLES HERE*************************/
 int current_time = 0;
-int mode_bit = 0;
+int mode_bit = 1;
 int CPU = 0;
-int context_save_time = 0;
-bool interrupt_flag = true;
+int context_save_time = 10; //for saving content
+bool interrupt_flag = false;
 int ISR = 0;
+int time_to_interrupt = 0;
+int ISR_delay_time = 40;
 
     //parse each line of the input trace file
     while(std::getline(input_file, trace)) {
         auto [activity, duration_intr] = parse_trace(trace);
 
         /******************ADD YOUR SIMULATION CODE HERE*************************/
-
-    //Step 1: Interrupt flag is raised (hardware detects the interrupt)
-        if (activity == "SYSCALL") {
-            interrupt_flag = true;
-            ISR = duration_intr;
-            //entering kernel mode
-            std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-            //write_output(result.next);
-            execution += result.first; //add to output trace
-            current_time = result.second; //update time to new time
-            mode_bit = 1; 
-            current_time++;
-
-            //delay?
-            int isr_delay = (ISR < (int)delays.size()? delays[ISR]: 40);
-            execution += std::to_string(current_time) + ","+std::to_string(isr_delay)+",exeute ISR for device"+ std::to_string(ISR)+"\n";
-            current_time += isr_delay;
-
-        //Step 2: Context is saved into registers and PC is saved to so that when the interupt is handled, it can return to the same process
-        } 
-
-        else if (activity == "CPU") {
-            if (mode_bit == 0) { //user mode
-                if (interrupt_flag == true) {
-                    //handle interrupt
-                    //int time_to_interrupt = CPU_time - CPU;
-                    CPU += context_save_time;
-                    //current_time += time_to_interrupt;
-                    //entering kernel mode
+        //Step 0: Check if the activity is CPU or IO
+        if (activity == "CPU") {
+            //if (mode_bit == 1) { //kernel mode
+                //if (interrupt_flag == true) {
+                    mode_bit = 0; //switch to kernel mode
+                    CPU = duration_intr; //set CPU time
                     std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
                     write_output(result.first);
-                    mode_bit = 1; 
-                    current_time++;
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
-                    CPU = duration_intr; //remaining CPU time after interrupt is handled
+                    duration_intr = CPU - context_save_time;
                     current_time += CPU; //increment current time by remaining CPU time
-                } 
-            }
+                //} 
+            //}
         }
-          else if (activity == "END_IO"){
 
-            interrupt_flag = true;
-        }                               
-        
-        else {
-            interrupt_flag = false;
-        }   
+    //Step 1: Interrupt flag is raised (hardware detects the interrupt)
+        else if (activity == "SYSCALL") {
+            ISR = vectors.size()-1; //set the syscall vector to 0x00FF
+            context_save_time -= context_save_time;
+            //vectors.at(delays.size() - 1); //set the syscall vector to 0x00FF
+            //std::string vector_address(vectors.at(delays.size() - 1));
+            //vector.push_back("0x00FF");
+            std::pair<std::string, int> result = intr_boilerplate(current_time, duration_intr, context_save_time, vectors);
+            execution += result.first; //add to output trace
+            mode_bit = 1;
 
-
+        //Step 2: Context is saved into registers and PC is saved to so that when the interupt is handled, it can return to the same process
+        }
         //Step 3: Obtain the ISR address from the vector table
 
         /************************************************************************/
-    
     }
     input_file.close();
-
+    
     write_output(execution);
-   
-
+    
      return 0;
 
 }

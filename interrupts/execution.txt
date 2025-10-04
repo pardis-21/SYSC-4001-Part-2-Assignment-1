@@ -1,18 +1,12 @@
-96, 1, switch to kernel mode
-97, 0, context saved
-97, 1, find vector 6 in memory position 0x000C
-98, 1, load address 0X0639
- into the PC
-100,265,exeute ISR for device6
-365, 1, switch to kernel mode
-366, 0, context saved
-366, 1, find vector 17 in memory position 0x0022
-367, 1, load address 0X05B3
- into the PC
-369,235,exeute ISR for device17
-604, 1, switch to kernel mode
-605, 0, context saved
-605, 1, find vector 14 in memory position 0x001C
-606, 1, load address 0X0165
- into the PC
-608,456,exeute ISR for device14
+95, 1, switch to kernel mode
+96, 0, context saved
+96, 1, find vector 6 in memory position 0x000C
+97, 1, load address 0X0639 into the PC
+193, 1, switch to kernel mode
+194, 0, context saved
+194, 1, find vector 17 in memory position 0x0022
+195, 1, load address 0X05B3 into the PC
+331, 1, switch to kernel mode
+332, 0, context saved
+332, 1, find vector 14 in memory position 0x001C
+333, 1, load address 0X0165 into the PC
