@@ -54,16 +54,21 @@ int ISR_delay_time = 40;
              }    
 
                     CPU = duration_intr; //set CPU time
-                    std::pair<std::string, int> result = intr_boilerplate(current_time, ISR % vectors.size(), context_save_time, vectors);
+                    std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
                     current_time += CPU; //increment current time by remaining CPU time
+                    ISR = 0;
         }
 
         else if (activity == "SYSCALL") {
+            if(ISR > 0 || ISR < vectors.size() -1) {
+                std::cerr << "Error: Invalid SYSCALL number: " << ISR << std::endl;
+                return 1;
+            }
             ISR = duration_intr; //set the syscall vector to 0x00FF
             context_save_time -= context_save_time;
             
-            std::pair<std::string, int> result = intr_boilerplate(current_time, ISR % vectors.size() , context_save_time, vectors);
+            std::pair<std::string, int> result = intr_boilerplate(current_time, ISR , context_save_time, vectors);
             //vectors.insert(vectors.begin(), "0x0000");
             
             execution += result.first; //add to output trace
@@ -78,7 +83,7 @@ int ISR_delay_time = 40;
                 interrupt_flag = true; //set interrupt flag if time to interrupt has passed
             }
             if (interrupt_flag && mode_bit == 1) { //if interrupt flag is set and in user mode
-                std::pair<std::string, int> result = intr_boilerplate(current_time, ISR % vectors.size(), context_save_time, vectors);
+                std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
                 execution += result.first; //add to output trace
                 current_time = result.second; //update current time
                 mode_bit = 1; //switch back to user mode
