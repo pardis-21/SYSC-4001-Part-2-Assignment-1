@@ -63,7 +63,7 @@ int ISR_delay_time = 40;
 
         else if (activity == "SYSCALL") {
             ISR = duration_intr; //set the syscall vector to 0x00FF
-            context_save_time -= context_save_time;
+            //context_save_time = context_save_time;
             
             std::pair<std::string, int> result = intr_boilerplate(current_time, duration_intr , context_save_time, vectors);
             //vectors.insert(vectors.begin(), "0x0000");
