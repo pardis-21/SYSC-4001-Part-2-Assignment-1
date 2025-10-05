@@ -9,7 +9,6 @@
 #include<utility>
 #include<sstream>
 #include<iomanip>
-
 #include<stdio.h>
 
 #define ADDR_BASE   0
