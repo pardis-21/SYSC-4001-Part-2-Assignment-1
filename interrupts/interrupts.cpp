@@ -79,7 +79,8 @@ int ISR_delay_time = 40;
             if (time_to_interrupt <= current_time) {
                 interrupt_flag = true; //set interrupt flag if time to interrupt has passed
             }
-            if (interrupt_flag && mode_bit == 1) { //if interrupt flag is set and in user mode
+            if (interrupt_flag && mode_bit == 1) 
+            { //if interrupt flag is set and in user mode
                 std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
                 execution += result.first; //add to output trace
                 current_time = result.second; //update current time
