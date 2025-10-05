@@ -47,6 +47,7 @@ int ISR_delay_time = 40;
         /******************ADD YOUR SIMULATION CODE HERE*************************/
         //vectors.insert(vectors.begin(), "0x0000"); //insert the default vector at the beginning of the vector table
         //Step 0: Check if the activity is CPU or IO
+       
         if (activity == "CPU") {
             if (mode_bit == 1 || interrupt_flag == false) { //if in user mode
                 mode_bit = 0; //switch to kernel mode
@@ -61,14 +62,10 @@ int ISR_delay_time = 40;
         }
 
         else if (activity == "SYSCALL") {
-            if(ISR > 0 || ISR < vectors.size() -1) {
-                std::cerr << "Error: Invalid SYSCALL number: " << ISR << std::endl;
-                return 1;
-            }
             ISR = duration_intr; //set the syscall vector to 0x00FF
             context_save_time -= context_save_time;
             
-            std::pair<std::string, int> result = intr_boilerplate(current_time, ISR , context_save_time, vectors);
+            std::pair<std::string, int> result = intr_boilerplate(current_time, duration_intr , context_save_time, vectors);
             //vectors.insert(vectors.begin(), "0x0000");
             
             execution += result.first; //add to output trace
@@ -92,6 +89,7 @@ int ISR_delay_time = 40;
         }
         
         /************************************************************************/
+    
     }
     input_file.close();
     
