@@ -75,7 +75,7 @@ int ISR_delay_time = 40;
         }
         else if (activity == "END_IO"){
             ISR = duration_intr; //set the ISR to the device number
-            time_to_interrupt += delays.at(ISR); //set the time to interrupt based on device delay
+            //time_to_interrupt += delays.at(ISR); //set the time to interrupt based on device delay
             if (time_to_interrupt <= current_time) {
                 interrupt_flag = true; //set interrupt flag if time to interrupt has passed
             }
