@@ -60,7 +60,7 @@ int ISR_delay_time = 40;
                     current_time += CPU; //increment current time by remaining CPU time
                     ISR = 0;
         }
-
+        //ERROR
         else if (activity == "SYSCALL") {
             ISR = duration_intr; //set the syscall vector to 0x00FF
             //context_save_time = context_save_time;
