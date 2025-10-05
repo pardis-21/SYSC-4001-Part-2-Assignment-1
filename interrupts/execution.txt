@@ -1,17 +1,12 @@
 95, 1, switch to kernel mode
 96, 0, context saved
 96, 1, find vector 6 in memory position 0x000C
-97, 1, load address 0X0639
- into the PC
-
+97, 1, load address 0X0639 into the PC
 193, 1, switch to kernel mode
 194, 0, context saved
 194, 1, find vector 17 in memory position 0x0022
-195, 1, load address 0X05B3
- into the PC
- 
+195, 1, load address 0X05B3 into the PC
 331, 1, switch to kernel mode
 332, 0, context saved
 332, 1, find vector 14 in memory position 0x001C
-333, 1, load address 0X0165
- into the PC
+333, 1, load address 0X0165 into the PC

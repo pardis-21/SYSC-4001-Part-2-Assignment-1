@@ -48,25 +48,20 @@ int ISR_delay_time = 40;
         //vectors.insert(vectors.begin(), "0x0000"); //insert the default vector at the beginning of the vector table
         //Step 0: Check if the activity is CPU or IO
         if (activity == "CPU") {
-            if (mode_bit == 1) { //if in user mode
+            if (mode_bit == 1 || interrupt_flag == false) { //if in user mode
                 mode_bit = 0; //switch to kernel mode
-            } 
-                    mode_bit = 0; //switch to kernel mode
+                interrupt_flag = true;           
+             }    
+
                     CPU = duration_intr; //set CPU time
                     std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
-                   
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
-                    duration_intr = CPU - context_save_time;
                     current_time += CPU; //increment current time by remaining CPU time
-                //} 
-            //}
         }
 
         else if (activity == "SYSCALL") {
             ISR = duration_intr; //set the syscall vector to 0x00FF
             context_save_time -= context_save_time;
-            //vectors; //set the syscall vector to 0x00FF
-            //std::string vector_address(vectors.at(delays.size() - 1));
             
             std::pair<std::string, int> result = intr_boilerplate(current_time, ISR , context_save_time, vectors);
             //vectors.insert(vectors.begin(), "0x0000");
