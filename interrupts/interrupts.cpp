@@ -33,8 +33,8 @@ int main(int argc, char** argv) {
 int current_time = 0;
 int mode_bit = 1; //1 for user mode, 0 for kernel mode
 int CPU = 0;
-const int CONTEXT_SAVE = 10; //for saving content
 const int CONTEXT_RESTORE = 10; //for restoring content
+const int CONTEXT_SAVE = 10; //for saving content
 bool interrupt_flag = false;
 int ISR = 0;
 int time_to_interrupt = 0;
@@ -55,8 +55,7 @@ const int IRET_TIME = 1;
                     //CPU = duration_intr; //set CPU time
                     
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
-                   current_time += duration_intr; //increment current time by remaining CPU time
-                     
+                    current_time += duration_intr; //increment current time by remaining CPU time
                     ISR = 0;
                     
         }
@@ -79,6 +78,7 @@ const int IRET_TIME = 1;
             mode_bit = 1; //switch back to user mode
            
             interrupt_flag = false; //reset interrupt flag after handling interrupt
+            current_time += IRET_TIME; //return from interrupt to cpu
         }
         else if (activity == "END_IO"){
             ISR = duration_intr; //set the ISR to the device number
@@ -94,7 +94,7 @@ const int IRET_TIME = 1;
 
                 mode_bit = 1; //switch back to user mode
                 interrupt_flag = false; //reset interrupt flag after handling interrupt
-            IRET_TIME; //return from interrupt
+            current_time += IRET_TIME; //return from interrupt to cpu
         }
         
         /************************************************************************/

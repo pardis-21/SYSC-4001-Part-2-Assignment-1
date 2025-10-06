@@ -1,0 +1,49 @@
+0, 95, CPU activity: BURST
+95, 1, switch to kernel mode
+96, 30, context saved
+126, 1, find vector 6 in memory position 0x000C
+127, 1, load address 0X0639
+ into the PC
+128, 40, Do ISR for device number: 6
+168, 10, context restored
+178, 26, CPU activity: BURST
+204, 1, switch to kernel mode
+205, 30, context saved
+235, 1, find vector 6 in memory position 0x000C
+236, 1, load address 0X0639
+ into the PC
+237, 40, ISR for device number (END_IO): 6
+277, 10, context restored
+287, 72, CPU activity: BURST
+359, 1, switch to kernel mode
+360, 30, context saved
+390, 1, find vector 17 in memory position 0x0022
+391, 1, load address 0X05B3
+ into the PC
+392, 40, Do ISR for device number: 17
+432, 10, context restored
+442, 50, CPU activity: BURST
+492, 1, switch to kernel mode
+493, 30, context saved
+523, 1, find vector 17 in memory position 0x0022
+524, 1, load address 0X05B3
+ into the PC
+525, 40, ISR for device number (END_IO): 17
+565, 10, context restored
+575, 88, CPU activity: BURST
+663, 1, switch to kernel mode
+664, 30, context saved
+694, 1, find vector 14 in memory position 0x001C
+695, 1, load address 0X0165
+ into the PC
+696, 40, Do ISR for device number: 14
+736, 10, context restored
+746, 31, CPU activity: BURST
+777, 1, switch to kernel mode
+778, 30, context saved
+808, 1, find vector 14 in memory position 0x001C
+809, 1, load address 0X0165
+ into the PC
+810, 40, ISR for device number (END_IO): 14
+850, 10, context restored
+860, 52, CPU activity: BURST
