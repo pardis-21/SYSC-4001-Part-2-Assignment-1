@@ -51,49 +51,49 @@ const int IRET_TIME = 1;
         //Step 0: Check if the activity is CPU or IO
        
         if (activity == "CPU") { 
-                    execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", CPU activity\n";
-                    CPU = duration_intr; //set CPU time
+                    execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", CPU activity: BURST\n";
+                    //CPU = duration_intr; //set CPU time
                     
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
                    current_time += duration_intr; //increment current time by remaining CPU time
-                    std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, CONTEXT_SAVE, vectors);
                      
                     ISR = 0;
                     
         }
  
         else if (activity == "SYSCALL") {
-            ISR = duration_intr; //set the syscall vector to 0x00FF
-            //context_save_time = context_save_time;
-            int device_delay = delays.at(ISR); //get the device delay from the delays vector
+            ISR = duration_intr; //set the ISR to the device number
             std::pair<std::string, int> result = intr_boilerplate(current_time, duration_intr , CONTEXT_SAVE, vectors);
             
-            current_time = result.second; //update current time
-            
-            execution += result.first; //add to output trace
-            current_time += ISR_ACTIVITY_TIME; 
-            current_time += CONTEXT_RESTORE;
            
-            mode_bit = 1;
-            //current_time += CONTEXT_RESTORE;
+            execution += result.first; //add to output trace
+            current_time = result.second; //update current time
+
+            execution += std::to_string(current_time) + ", " + std::to_string(ISR_ACTIVITY_TIME) + ", Do ISR for device number: " + std::to_string(ISR) + "\n";
+            
+            current_time += ISR_ACTIVITY_TIME; //increment current time by ISR activity time
+           
+            execution += std::to_string(current_time) + ", " + std::to_string(CONTEXT_RESTORE) + ", context restored\n";
+            current_time += CONTEXT_RESTORE; //increment current time by context restore time
+
+            mode_bit = 1; //switch back to user mode
            
             interrupt_flag = false; //reset interrupt flag after handling interrupt
         }
         else if (activity == "END_IO"){
             ISR = duration_intr; //set the ISR to the device number
-            int device_delay = delays.at(ISR); //get the device delay from the delays vector
-            if (interrupt_flag && mode_bit == 1) 
-            { //if interrupt flag is set and in user mode
+
                 std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, CONTEXT_SAVE, vectors);
                 execution += result.first; //add to output trace
-                //current_time = result.second; //update current time
-                current_time = result.second;
+                current_time = result.second; //update current time
+              
+                execution += std::to_string(current_time) + ", " + std::to_string(ISR_ACTIVITY_TIME) + ", ISR for device number (END_IO): " + std::to_string(ISR) + "\n";
                 current_time += ISR_ACTIVITY_TIME; //increment current time by ISR activity time
+                execution += std::to_string(current_time) + ", " + std::to_string(CONTEXT_RESTORE) + ", context restored\n";
                 current_time += CONTEXT_RESTORE; //increment current time by context restore time
 
                 mode_bit = 1; //switch back to user mode
                 interrupt_flag = false; //reset interrupt flag after handling interrupt
-            }
             IRET_TIME; //return from interrupt
         }
         
