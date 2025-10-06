@@ -57,10 +57,12 @@ const int IRET = 1;
              }    
 
                     CPU = duration_intr; //set CPU time
-                    std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, CONTEXT_RESTORE, vectors);
+                    
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
-                    current_time += CPU; //increment current time by remaining CPU time
+                    current_time += duration_intr; //increment current time by remaining CPU time
+                    std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, CONTEXT_SAVE, vectors);
                     ISR = 0;
+                    
         }
  
         else if (activity == "SYSCALL") {
@@ -68,11 +70,13 @@ const int IRET = 1;
             //context_save_time = context_save_time;
             std::pair<std::string, int> result = intr_boilerplate(current_time, duration_intr , CONTEXT_SAVE, vectors);
             //vectors.insert(vectors.begin(), "0x0000");
+            //current_time = result.second; //update current time
             current_time += ISR_ACTIVITY_TIME; //increment current time by syscall activity time
+            current_time += CONTEXT_RESTORE;
             execution += result.first; //add to output trace
             mode_bit = 1;
-            current_time += CONTEXT_RESTORE;
-            //current_time = result.second; //update current time
+            //current_time += CONTEXT_RESTORE;
+           
             interrupt_flag = false; //reset interrupt flag after handling interrupt
         }
         else if (activity == "END_IO"){
@@ -85,7 +89,8 @@ const int IRET = 1;
             { //if interrupt flag is set and in user mode
                 std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, CONTEXT_SAVE, vectors);
                 execution += result.first; //add to output trace
-                current_time += CONTEXT_RESTORE; //update current time
+                //current_time = result.second; //update current time
+                current_time += ISR_ACTIVITY_TIME; //increment current time by ISR activity time
                 mode_bit = 1; //switch back to user mode
                 interrupt_flag = false; //reset interrupt flag after handling interrupt
             }
