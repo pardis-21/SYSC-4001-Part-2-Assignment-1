@@ -40,7 +40,7 @@ std::tuple<std::vector<std::string>, std::vector<int>> parse_args(int argc, char
         std::cerr << "Error: Unable to open file: " << argv[1] << std::endl;
         exit(1);
     }
-
+//testing
     std::ifstream input_vector_table;
     input_vector_table.open(argv[2]);
     if (!input_vector_table.is_open()) {
