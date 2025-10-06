@@ -33,12 +33,12 @@ int main(int argc, char** argv) {
 int current_time = 0;
 int mode_bit = 1; //1 for user mode, 0 for kernel mode
 int CPU = 0;
-const int CONTEXT_RESTORE = 10; //for restoring content
-const int CONTEXT_SAVE = 10; //for saving content
+const int CONTEXT_RESTORE = 30; //for restoring content
+const int CONTEXT_SAVE = 30; //for saving content
 bool interrupt_flag = false;
 int ISR = 0;
 int time_to_interrupt = 0;
-const int ISR_ACTIVITY_TIME = 40;
+const int ISR_ACTIVITY_TIME = 190;
 const int IRET_TIME = 1;
 //#define VECTOR_SIZE = vectors.size() - 1;
 
