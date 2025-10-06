@@ -33,11 +33,13 @@ int main(int argc, char** argv) {
 int current_time = 0;
 int mode_bit = 1; //1 for user mode, 0 for kernel mode
 int CPU = 0;
-int context_save_time = 10; //for saving content
+const int CONTEXT_SAVE = 10; //for saving content
+const int CONTEXT_RESTORE = 10; //for restoring content
 bool interrupt_flag = false;
 int ISR = 0;
 int time_to_interrupt = 0;
-int ISR_delay_time = 40;
+const int ISR_ACTIVITY_TIME = 40;
+const int IRET = 1;
 //#define VECTOR_SIZE = vectors.size() - 1;
 
     //parse each line of the input trace file
@@ -55,21 +57,21 @@ int ISR_delay_time = 40;
              }    
 
                     CPU = duration_intr; //set CPU time
-                    std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
+                    std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, CONTEXT_RESTORE, vectors);
                     interrupt_flag = false; //reset interrupt flag after handling interrupt
                     current_time += CPU; //increment current time by remaining CPU time
                     ISR = 0;
         }
-        //ERROR
+ 
         else if (activity == "SYSCALL") {
             ISR = duration_intr; //set the syscall vector to 0x00FF
             //context_save_time = context_save_time;
-            
-            std::pair<std::string, int> result = intr_boilerplate(current_time, duration_intr , context_save_time, vectors);
+            std::pair<std::string, int> result = intr_boilerplate(current_time, duration_intr , CONTEXT_SAVE, vectors);
             //vectors.insert(vectors.begin(), "0x0000");
-            
+            current_time += ISR_ACTIVITY_TIME; //increment current time by syscall activity time
             execution += result.first; //add to output trace
             mode_bit = 1;
+            current_time += CONTEXT_RESTORE;
             //current_time = result.second; //update current time
             interrupt_flag = false; //reset interrupt flag after handling interrupt
         }
@@ -81,12 +83,13 @@ int ISR_delay_time = 40;
             }
             if (interrupt_flag && mode_bit == 1) 
             { //if interrupt flag is set and in user mode
-                std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, context_save_time, vectors);
+                std::pair<std::string, int> result = intr_boilerplate(current_time, ISR, CONTEXT_SAVE, vectors);
                 execution += result.first; //add to output trace
-                current_time = result.second; //update current time
+                current_time += CONTEXT_RESTORE; //update current time
                 mode_bit = 1; //switch back to user mode
                 interrupt_flag = false; //reset interrupt flag after handling interrupt
             }
+            IRET; //return from interrupt
         }
         
         /************************************************************************/
